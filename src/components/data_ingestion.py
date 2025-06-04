@@ -3,9 +3,13 @@ import sys
 import os
 from src.exception import CustomException
 from src.logger import logging
+from src.components.data_transformation import DataTransformation
+from src.components.data_transformation import DataTransformationConfig
 import pandas as pd
 
 import sklearn.model_selection as model_selection
+
+from src.utils import save_object
 @dataclass
 class DataIngestionConfig:
     train_data_path = os.path.join('artifacts', 'train.csv')
@@ -43,7 +47,14 @@ class DataIngestion:
 
 if __name__ == "__main__":
     obj=DataIngestion()
-    obj.initiate_data_ingestion()
+    train_data,test_data,raw_data= obj.initiate_data_ingestion()
     print("Data ingestion completed successfully")
-        
+
+    data_transformation = DataTransformation()
+    preprocessor = data_transformation.initiate_data_transformation(train_data, test_data) 
+    print("Data transformation object created successfully")
+    logging.info("Data ingestion and transformation completed successfully") 
+    save_object(DataTransformationConfig.preprocessor_obj_file_path, preprocessor)
+    logging.info("Preprocessor object saved successfully")
+    print("Preprocessor object saved successfully") 
 
