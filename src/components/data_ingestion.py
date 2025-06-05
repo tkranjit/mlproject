@@ -3,8 +3,13 @@ import sys
 import os
 from src.exception import CustomException
 from src.logger import logging
+
 from src.components.data_transformation import DataTransformation
 from src.components.data_transformation import DataTransformationConfig
+
+from src.components.model_trainer import ModelTrainer
+from src.components.model_trainer import ModelTrainerConfig
+
 import pandas as pd
 
 import sklearn.model_selection as model_selection
@@ -51,10 +56,12 @@ if __name__ == "__main__":
     print("Data ingestion completed successfully")
 
     data_transformation = DataTransformation()
-    preprocessor = data_transformation.initiate_data_transformation(train_data, test_data) 
+    train_arr,test_arr,preprocessing_obj = data_transformation.initiate_data_transformation(train_data, test_data) 
     print("Data transformation object created successfully")
     logging.info("Data ingestion and transformation completed successfully") 
-    save_object(DataTransformationConfig.preprocessor_obj_file_path, preprocessor)
-    logging.info("Preprocessor object saved successfully")
-    print("Preprocessor object saved successfully") 
+    
+    model_trainer = ModelTrainer()
+    best_model_name, best_model_score = model_trainer.initiate_model_trainer(train_arr, test_arr)
+                        
+    
 
