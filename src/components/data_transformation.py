@@ -82,6 +82,11 @@ class DataTransformation:
                 
                 logging.info("Data transformation completed successfully")
                 
+                save_object(
+                    file_path=self.data_transformation_config.preprocessor_obj_file_path,
+                    obj=preprocessing_obj)
+
+            
                 return train_arr, test_arr, preprocessing_obj
             except Exception as e:
                 logging.error(f"An error occurred during data transformation: {e}")
